@@ -4,50 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cat Corp — Main Directorate</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        .archive-container {
+            max-width: 700px;
+            margin: 60px auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border: 2px solid #333333;
+            box-shadow: 8px 8px 0 #d9d0c1;
+        }
+        header {
+            text-align: center;
+            border-bottom: 3px double #555;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+        }
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: grayscale(100%) contrast(120%);
+        }
+        h1 {
+            font-size: 28px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: normal;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        .volume-list {
+            list-style: none;
+            padding: 0;
+        }
+        .volume-list li {
+            margin: 16px 0;
+            padding: 12px;
+            border-left: 4px solid #ab3b3b;
+            background: #fbfaf5;
+            transition: background 0.2s;
+        }
+        .volume-list li:hover {
+            background: #f0ece1;
+        }
+        .volume-list a {
+            text-decoration: none;
+            color: #2b2b2b;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: baseline;
+        }
+        .vol-code {
+            font-weight: bold;
+            color: #ab3b3b;
+            min-width: 120px;
+        }
+        .vol-title {
+            font-style: italic;
+        }
+        .vol-status {
+            color: #4a7c4f;
+            font-size: 14px;
+        }
+        .notice {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+            border-top: 1px dashed #ccc;
+            padding-top: 20px;
+        }
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+        @media (max-width: 500px) {
+            .archive-container {
+                margin: 20px;
+                padding: 20px;
+            }
+            .volume-list a {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="hub-container">
+    <div class="archive-container">
         <header>
-            <img src="images/catcorp-logo.png" alt="Seal of Cat Corp" class="logo-large">
+            <img src="./images/catcorp-logo.png" alt="Cat Corp Seal" class="logo">
             <h1>Cat Corp</h1>
             <p class="subtitle">Main Directorate for Cultural Production</p>
-            <p class="subtitle2">Est. ████ — Reactivated for Public Service</p>
+            <p style="font-size:13px; color:#777; letter-spacing:1px; font-style:italic;">Est. ████ — Reactivated for Public Service</p>
         </header>
 
-        <nav class="directorate">
-            <div class="dept-card">
-                <a href="archive/index.html">
-                    <h2>Archives</h2>
-                    <p>Declassified comic volumes and serialized documents.</p>
-                    <span class="status">[ Public Access Granted ]</span>
-                </a>
-            </div>
-
-            <div class="dept-card">
-                <a href="development/index.html">
-                    <h2>Development Bureau</h2>
-                    <p>Projects undergoing incubation: animation, gaming, liminal research.</p>
-                    <span class="status">[ Clearance: Provisional ]</span>
-                </a>
-            </div>
-
-            <div class="dept-card">
-                <a href="personnel/index.html">
-                    <h2>Personnel Office</h2>
-                    <p>Employee dossiers, contact protocols, and institutional biography.</p>
-                    <span class="status">[ Inquire Within ]</span>
-                </a>
-            </div>
-
-            <div class="dept-card restricted">
-                <a href="restricted/index.html">
-                    <h2>Restricted Records</h2>
-                    <p>Pitch bibles, internal memos, sensitive materials.</p>
-                    <span class="status">[ Clearance Required ]</span>
-                </a>
-            </div>
-        </nav>
+        <main>
+            <h2 style="margin-top:0;">Directorate Index</h2>
+            <ul class="volume-list">
+                <li>
+                    <a href="./archive/index.html">
+                        <span class="vol-code">[ Archives ]</span>
+                        <span class="vol-title">Declassified comic volumes and serialized documents.</span>
+                        <span class="vol-status">[ Public Access Granted ]</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="./personnel/index.html">
+                        <span class="vol-code">[ Personnel Office ]</span>
+                        <span class="vol-title">Employee dossiers, contact protocols, and institutional biography.</span>
+                        <span class="vol-status">[ Inquire Within ]</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="./development/index.html">
+                        <span class="vol-code">[ Development Bureau ]</span>
+                        <span class="vol-title">Projects undergoing incubation: animation, gaming, liminal research.</span>
+                        <span class="vol-status">[ Clearance: Provisional ]</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="./restricted/index.html">
+                        <span class="vol-code">[ Restricted Records ]</span>
+                        <span class="vol-title">Pitch bibles, internal memos, sensitive materials.</span>
+                        <span class="vol-status">[ Clearance Required ]</span>
+                    </a>
+                </li>
+            </ul>
+            <p class="notice">Further directories pending archival clearance.</p>
+        </main>
 
         <footer>
             <p>Cat Corp is an independent cultural entity operating under the principles of structured imagination and regulated surrealism. All inquiries are processed at the Personnel Office.</p>
