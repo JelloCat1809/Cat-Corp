@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCP-VAN-001: Vanitas — Cat Corp</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .series-header {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+            align-items: flex-start;
+        }
+        .series-cover-large {
+            width: 200px;
+            height: 280px;
+            border: 2px solid #555;
+            box-shadow: 4px 4px 0 #ccc;
+            flex-shrink: 0;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #888;
+        }
+        .series-cover-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .series-meta {
+            flex: 1;
+        }
+        .series-meta h2 {
+            margin-top: 0;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+        .synopsis {
+            margin: 20px 0;
+            padding: 20px;
+            background: #fbfaf5;
+            border-left: 4px solid #ab3b3b;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #444;
+        }
+        .chapter-list {
+            margin: 30px 0;
+            list-style: none;
+            padding: 0;
+        }
+        .chapter-list li {
+            margin: 10px 0;
+            padding: 12px;
+            border: 1px dashed #ccc;
+            background: #fdfdfa;
+            transition: background 0.2s;
+        }
+        .chapter-list li:hover {
+            background: #f0ece1;
+        }
+        .chapter-list a {
+            text-decoration: none;
+            color: #2b2b2b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chapter-title {
+            font-weight: bold;
+        }
+        .chapter-meta {
+            font-size: 12px;
+            color: #888;
+        }
+        @media (max-width: 600px) {
+            .series-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .series-cover-large {
+                width: 150px;
+                height: 210px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="archive-container" style="max-width:700px; margin:60px auto; padding:40px; background:#ffffff; border:2px solid #333; box-shadow:8px 8px 0 #d9d0c1;">
+        <p style="text-align:center; margin-bottom:20px;">
+            <a href="../index.html" style="font-family:'Courier New', monospace; color:#ab3b3b; text-decoration:none;">← Return to Archives</a>
+        </p>
+
+        <!-- Series Header -->
+        <div class="series-header">
+            <div class="series-cover-large">
+                <!-- Replace with actual cover: <img src="../../images/vanitas-cover.png" alt="Vanitas Cover"> -->
+                [Cover]
+            </div>
+            <div class="series-meta">
+                <h2>Vanitas</h2>
+                <p style="color: #666; font-size: 14px;">
+                    <strong>Document ID:</strong> CCP-VAN-001<br>
+                    <strong>Author:</strong> Jello Cat<br>
+                    <strong>Status:</strong> <span style="color: #4a7c4f;">[ Completed ]</span><br>
+                    <strong>License:</strong> CC BY-SA 4.0
+                </p>
+            </div>
+        </div>
+
+        <!-- Synopsis -->
+        <div class="synopsis">
+            <h3 style="margin-top:0;">Synopsis</h3>
+            <p>An artist with a particular, strange method of creating his art piece. He has failed many times to create a hit piece. Will he succeed today?</p>
+        </div>
+
+        <!-- Volume List -->
+        <h3>Volumes</h3>
+        <ul class="chapter-list">
+            <li>
+                <a href="../volumes/vanitas.html">
+                    <span class="chapter-title">Complete Work</span>
+                    <span class="chapter-meta">Read the full short</span>
+                </a>
+            </li>
+        </ul>
+        <p class="notice">This work has been fully declassified.</p>
+    </div>
+</body>
+</html>
