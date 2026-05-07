@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CCP-VAN-001: Vanitas (Complete) — Cat Corp</title>
-    <!-- Link to the main stylesheet in the root directory -->
     <link rel="stylesheet" href="../../style.css">
     <style>
         body {
             background: #e8e4db;
         }
         .reader-container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 40px auto;
             padding: 30px;
             background: #fff;
@@ -20,59 +19,112 @@
         }
         .reader-nav {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
         }
         .reader-nav a {
-            font-family: 'Courier New', monospace;
             color: #ab3b3b;
             text-decoration: none;
             font-size: 14px;
         }
-        h2.reader-title {
-            text-align: center;
-            font-weight: normal;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-        }
-        .reader-subtitle {
-            text-align: center;
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 40px;
-        }
-
-        /* Single page (cover) */
-        .comic-page.single {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .comic-page.single img {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ccc;
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
-        }
-
-        /* Spread: two pages side by side */
-        .comic-page.spread {
+        .reader-toolbar {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
             gap: 10px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        .comic-page.spread img {
+        .reader-toolbar button {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            padding: 6px 12px;
+            background: #fdfaf4;
+            border: 1px solid #999;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 #ccc;
+            transition: background 0.2s;
+        }
+        .reader-toolbar button.active {
+            background: #f0ece1;
+            box-shadow: 1px 1px 0 #bbb;
+            border-color: #ab3b3b;
+            color: #ab3b3b;
+            font-weight: bold;
+        }
+
+        /* Spread view */
+        .spread-view {
+            text-align: center;
+        }
+        .spread-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            min-height: 400px;
+            flex-wrap: wrap;
+        }
+        .spread-container img {
             width: calc(50% - 5px);
             height: auto;
             border: 1px solid #ccc;
             box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
             display: block;
         }
-        @media (max-width: 600px) {
-            .comic-page.spread img {
-                width: 100%;
-            }
+        .spread-container.single-cover img {
+            width: auto;
+            max-width: 70%;
+        }
+        .arrow-nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .arrow-nav button {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            padding: 8px 16px;
+            background: #fdfaf4;
+            border: 1px solid #555;
+            cursor: pointer;
+            box-shadow: 3px 3px 0 #ccc;
+            transition: background 0.2s;
+        }
+        .arrow-nav button:disabled {
+            opacity: 0.4;
+            cursor: default;
+            box-shadow: none;
+        }
+        .page-indicator {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Scroll view */
+        .scroll-view {
+            text-align: center;
+        }
+        .scroll-spread {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .scroll-spread img {
+            width: calc(50% - 5px);
+            height: auto;
+            border: 1px solid #ccc;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
+        }
+        .scroll-spread.single-cover img {
+            width: auto;
+            max-width: 70%;
         }
         .end-note {
             text-align: center;
@@ -82,6 +134,12 @@
             padding-top: 20px;
             border-top: 1px dashed #ccc;
         }
+        @media (max-width: 600px) {
+            .spread-container img,
+            .scroll-spread img {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -90,55 +148,147 @@
             <a href="../series/vanitas.html">← Return to Vanitas</a>
         </div>
 
-        <h2 class="reader-title">Vanitas</h2>
-        <p class="reader-subtitle">Complete Work — Declassified</p>
+        <h2 style="text-align:center; font-weight:normal; letter-spacing:2px;">Vanitas</h2>
+        <p style="text-align:center; color:#666; font-size:14px; margin-bottom:20px;">Complete Work — Declassified</p>
 
-        <!-- Cover (page 1) — single -->
-        <div class="comic-page single">
-            <img src="../../images/vanitas/vanitas-001.jpg" alt="Cover - Vanitas">
+        <div class="reader-toolbar">
+            <button id="btn-spread" class="active">📖 Spreads (Page Flip)</button>
+            <button id="btn-scroll">📜 Scroll View</button>
         </div>
 
-        <!-- Spreads: pages 2 & 3, 4 & 5, ..., 18 & 19 -->
-        <div class="comic-page spread">
-            <img src="../../images/vanitas/vanitas-002.jpg" alt="Page 2">
-            <img src="../../images/vanitas/vanitas-003.jpg" alt="Page 3">
+        <!-- Spread view (default) -->
+        <div id="spread-view" class="spread-view">
+            <div id="spread-display" class="spread-container"></div>
+            <div class="arrow-nav">
+                <button id="prev-spread">◀ Previous</button>
+                <button id="next-spread">Next ▶</button>
+            </div>
+            <div class="page-indicator" id="spread-indicator"></div>
         </div>
-        <div class="comic-page spread">
-            <img src="../../images/vanitas/vanitas-004.jpg" alt="Page 4">
-            <img src="../../images/vanitas/vanitas-005.jpg" alt="Page 5">
-        </div>
-        <div class="comic-page spread">
-            <img src="../../images/vanitas/vanitas-006.jpg" alt="Page 6">
-            <img src="../../images/vanitas/vanitas-007.jpg" alt="Page 7">
-        </div>
-        <div class="comic-page spread">
-            <img src="../../images/vanitas/vanitas-008.jpg" alt="Page 8">
-            <img src="../../images/vanitas/vanitas-009.jpg" alt="Page 9">
-        </div>
-        <div class="comic-page spread">
-            <img src="../../images/vanitas/vanitas-010.jpg" alt="Page 10">
-            <img src="../../images/vanitas/vanitas-011.jpg" alt="Page 11">
-        </div>
-        <div class="comic-page spread">
-            <img src="../../images/vanitas/vanitas-012.jpg" alt="Page 12">
-            <img src="../../images/vanitas/vanitas-013.jpg" alt="Page 13">
-        </div>
-        <div class="comic-page spread">
-            <img src="../../images/vanitas/vanitas-014.jpg" alt="Page 14">
-            <img src="../../images/vanitas/vanitas-015.jpg" alt="Page 15">
-        </div>
-        <div class="comic-page spread">
-            <img src="../../images/vanitas/vanitas-016.jpg" alt="Page 16">
-            <img src="../../images/vanitas/vanitas-017.jpg" alt="Page 17">
-        </div>
-        <div class="comic-page spread">
-            <img src="../../images/vanitas/vanitas-018.jpg" alt="Page 18">
-            <img src="../../images/vanitas/vanitas-019.jpg" alt="Page 19">
+
+        <!-- Scroll view (hidden initially) -->
+        <div id="scroll-view" class="scroll-view" style="display:none;">
+            <!-- dynamically filled by JS -->
         </div>
 
         <div class="end-note">
             End of declassified document. — Cat Corp Archives
         </div>
     </div>
+
+    <script>
+        (function() {
+            // Image data: define the spreads
+            // Array of arrays: each inner array lists the image filenames for that view.
+            // First is cover (single), then spreads of 2 pages each.
+            const imageBase = "../../images/vanitas/";
+            const spreads = [
+                ["vanitas-001.jpg"],                    // cover (single)
+                ["vanitas-002.jpg", "vanitas-003.jpg"],  // spread 1
+                ["vanitas-004.jpg", "vanitas-005.jpg"],
+                ["vanitas-006.jpg", "vanitas-007.jpg"],
+                ["vanitas-008.jpg", "vanitas-009.jpg"],
+                ["vanitas-010.jpg", "vanitas-011.jpg"],
+                ["vanitas-012.jpg", "vanitas-013.jpg"],
+                ["vanitas-014.jpg", "vanitas-015.jpg"],
+                ["vanitas-016.jpg", "vanitas-017.jpg"],
+                ["vanitas-018.jpg", "vanitas-019.jpg"]
+            ];
+
+            let currentSpread = 0; // 0 = cover, 1 = first spread, etc.
+
+            // DOM elements
+            const spreadView = document.getElementById("spread-view");
+            const scrollView = document.getElementById("scroll-view");
+            const spreadDisplay = document.getElementById("spread-display");
+            const prevBtn = document.getElementById("prev-spread");
+            const nextBtn = document.getElementById("next-spread");
+            const spreadIndicator = document.getElementById("spread-indicator");
+            const btnSpread = document.getElementById("btn-spread");
+            const btnScroll = document.getElementById("btn-scroll");
+
+            // Render current spread
+            function renderSpread() {
+                const images = spreads[currentSpread];
+                let html = '';
+                if (images.length === 1) {
+                    html = `<div class="spread-container single-cover">
+                                <img src="${imageBase}${images[0]}" alt="Page">
+                            </div>`;
+                } else {
+                    html = `<div class="spread-container">
+                                <img src="${imageBase}${images[0]}" alt="Left page">
+                                <img src="${imageBase}${images[1]}" alt="Right page">
+                            </div>`;
+                }
+                spreadDisplay.innerHTML = html;
+                // Update navigation buttons
+                prevBtn.disabled = (currentSpread === 0);
+                nextBtn.disabled = (currentSpread === spreads.length - 1);
+                // Update indicator
+                const totalSpreads = spreads.length;
+                spreadIndicator.textContent = `Spread ${currentSpread + 1} of ${totalSpreads}`;
+            }
+
+            // Event listeners for arrows
+            prevBtn.addEventListener("click", () => {
+                if (currentSpread > 0) {
+                    currentSpread--;
+                    renderSpread();
+                }
+            });
+            nextBtn.addEventListener("click", () => {
+                if (currentSpread < spreads.length - 1) {
+                    currentSpread++;
+                    renderSpread();
+                }
+            });
+
+            // Switch to spread mode
+            btnSpread.addEventListener("click", () => {
+                spreadView.style.display = "block";
+                scrollView.style.display = "none";
+                btnSpread.classList.add("active");
+                btnScroll.classList.remove("active");
+                // Re-render in case we changed
+                renderSpread();
+            });
+
+            // Switch to scroll mode
+            btnScroll.addEventListener("click", () => {
+                spreadView.style.display = "none";
+                scrollView.style.display = "block";
+                btnScroll.classList.add("active");
+                btnSpread.classList.remove("active");
+                // Build scroll view if not already built
+                if (scrollView.children.length === 0) {
+                    buildScrollView();
+                }
+            });
+
+            // Build scroll view: show cover then spreads
+            function buildScrollView() {
+                let html = '';
+                for (let i = 0; i < spreads.length; i++) {
+                    const images = spreads[i];
+                    if (images.length === 1) {
+                        html += `<div class="scroll-spread single-cover">
+                                    <img src="${imageBase}${images[0]}" alt="Page">
+                                </div>`;
+                    } else {
+                        html += `<div class="scroll-spread">
+                                    <img src="${imageBase}${images[0]}" alt="Page">
+                                    <img src="${imageBase}${images[1]}" alt="Page">
+                                </div>`;
+                    }
+                }
+                scrollView.innerHTML = html;
+            }
+
+            // Initialize: default to spread mode, page 0
+            renderSpread();
+            // Keep scroll view initially empty; built on demand
+        })();
+    </script>
 </body>
 </html>
