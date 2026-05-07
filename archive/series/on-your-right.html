@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCP-OYR-001: On Your Right! — Cat Corp</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .series-header {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+            align-items: flex-start;
+        }
+        .series-cover-large {
+            width: 200px;
+            height: 280px;
+            border: 2px solid #555;
+            box-shadow: 4px 4px 0 #ccc;
+            flex-shrink: 0;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #888;
+        }
+        .series-cover-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .series-meta {
+            flex: 1;
+        }
+        .series-meta h2 {
+            margin-top: 0;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+        .synopsis {
+            margin: 20px 0;
+            padding: 20px;
+            background: #fbfaf5;
+            border-left: 4px solid #ab3b3b;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #444;
+        }
+        .chapter-list {
+            margin: 30px 0;
+            list-style: none;
+            padding: 0;
+        }
+        .chapter-list li {
+            margin: 10px 0;
+            padding: 12px;
+            border: 1px dashed #ccc;
+            background: #fdfdfa;
+            transition: background 0.2s;
+        }
+        .chapter-list li:hover {
+            background: #f0ece1;
+        }
+        .chapter-list a {
+            text-decoration: none;
+            color: #2b2b2b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chapter-title {
+            font-weight: bold;
+        }
+        .chapter-meta {
+            font-size: 12px;
+            color: #888;
+        }
+        .coming-soon {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+            margin: 40px 0;
+            padding: 30px;
+            border: 2px dashed #ccc;
+            background: #fdfaf4;
+        }
+        @media (max-width: 600px) {
+            .series-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .series-cover-large {
+                width: 150px;
+                height: 210px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="archive-container">
+        <div class="reader-nav">
+            <a href="../index.html" class="back-link">← Return to Archives</a>
+        </div>
+
+        <!-- Series Header: Cover + Meta -->
+        <div class="series-header">
+            <div class="series-cover-large">
+                <!-- Replace with actual cover image: <img src="../../images/oyr-cover.png" alt="On Your Right! Cover"> -->
+                [Cover]
+            </div>
+            <div class="series-meta">
+                <h2>On Your Right!</h2>
+                <p style="color: #666; font-size: 14px;">
+                    <strong>Document ID:</strong> CCP-OYR-001<br>
+                    <strong>Author:</strong> Jello Cat<br>
+                    <strong>Status:</strong> <span style="color: #ab3b3b;">[ In Production ]</span><br>
+                    <strong>License:</strong> CC BY-SA 4.0
+                </p>
+            </div>
+        </div>
+
+        <!-- Synopsis -->
+        <div class="synopsis">
+            <h3 style="margin-top:0;">Synopsis</h3>
+            <!-- You'll paste your own synopsis text here later -->
+            <p>A man finds himself trapped in a world where he can only turn right. Every corridor, every street, every doorway bends in the same direction — and the world is not designed to accommodate such a path. What begins as a strange limitation quickly becomes a quiet, escalating horror as the spaces around him begin to close in.</p>
+        </div>
+
+        <!-- Chapter / Volume List -->
+        <h3>Volumes & Chapters</h3>
+        <ul class="chapter-list">
+            <!-- For now, show "Coming Soon"; link to reader pages once they exist -->
+            <li>
+                <a href="#">
+                    <span class="chapter-title">Volume 1 (Complete)</span>
+                    <span class="chapter-meta">Status: In Progress</span>
+                </a>
+            </li>
+        </ul>
+        <p class="notice">Additional volumes pending declassification.</p>
+
+        <!-- Optional: "Coming Soon" block if no chapters available -->
+        <!--
+        <div class="coming-soon">
+            <p>No volumes have been declassified yet. The archive is being processed.<br>
+            Check back later, or follow the <a href="../../personnel/index.html">Personnel Office</a> for updates.</p>
+        </div>
+        -->
+    </div>
+</body>
+</html>
