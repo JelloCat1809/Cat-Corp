@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCP-VAN-001: Vanitas (Complete) — Cat Corp</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        body {
+            background: #e8e4db;
+        }
+        .reader-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #fff;
+            border: 2px solid #333;
+            box-shadow: 8px 8px 0 #d9d0c1;
+        }
+        .reader-nav {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .reader-nav a {
+            font-family: 'Courier New', monospace;
+            color: #ab3b3b;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        h2.reader-title {
+            text-align: center;
+            font-weight: normal;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+        .reader-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        /* Single page (cover) */
+        .comic-page.single {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .comic-page.single img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
+        }
+
+        /* Spread: two pages side by side */
+        .comic-page.spread {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .comic-page.spread img {
+            width: calc(50% - 5px);
+            height: auto;
+            border: 1px solid #ccc;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
+            display: block;
+        }
+        @media (max-width: 600px) {
+            .comic-page.spread img {
+                width: 100%;
+            }
+        }
+        .end-note {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="reader-container">
+        <div class="reader-nav">
+            <a href="../series/vanitas.html">← Return to Vanitas</a>
+        </div>
+
+        <h2 class="reader-title">Vanitas</h2>
+        <p class="reader-subtitle">Complete Work — Declassified</p>
+
+        <!-- Cover (page 1) — single -->
+        <div class="comic-page single">
+            <img src="../../images/vanitas/vanitas-001.jpg" alt="Cover - Vanitas">
+        </div>
+
+        <!-- Spreads: pages 2 & 3, 4 & 5, ..., 18 & 19 -->
+        <div class="comic-page spread">
+            <img src="../../images/vanitas/vanitas-002.jpg" alt="Page 2">
+            <img src="../../images/vanitas/vanitas-003.jpg" alt="Page 3">
+        </div>
+        <div class="comic-page spread">
+            <img src="../../images/vanitas/vanitas-004.jpg" alt="Page 4">
+            <img src="../../images/vanitas/vanitas-005.jpg" alt="Page 5">
+        </div>
+        <div class="comic-page spread">
+            <img src="../../images/vanitas/vanitas-006.jpg" alt="Page 6">
+            <img src="../../images/vanitas/vanitas-007.jpg" alt="Page 7">
+        </div>
+        <div class="comic-page spread">
+            <img src="../../images/vanitas/vanitas-008.jpg" alt="Page 8">
+            <img src="../../images/vanitas/vanitas-009.jpg" alt="Page 9">
+        </div>
+        <div class="comic-page spread">
+            <img src="../../images/vanitas/vanitas-010.jpg" alt="Page 10">
+            <img src="../../images/vanitas/vanitas-011.jpg" alt="Page 11">
+        </div>
+        <div class="comic-page spread">
+            <img src="../../images/vanitas/vanitas-012.jpg" alt="Page 12">
+            <img src="../../images/vanitas/vanitas-013.jpg" alt="Page 13">
+        </div>
+        <div class="comic-page spread">
+            <img src="../../images/vanitas/vanitas-014.jpg" alt="Page 14">
+            <img src="../../images/vanitas/vanitas-015.jpg" alt="Page 15">
+        </div>
+        <div class="comic-page spread">
+            <img src="../../images/vanitas/vanitas-016.jpg" alt="Page 16">
+            <img src="../../images/vanitas/vanitas-017.jpg" alt="Page 17">
+        </div>
+        <div class="comic-page spread">
+            <img src="../../images/vanitas/vanitas-018.jpg" alt="Page 18">
+            <img src="../../images/vanitas/vanitas-019.jpg" alt="Page 19">
+        </div>
+
+        <div class="end-note">
+            End of declassified document. — Cat Corp Archives
+        </div>
+    </div>
+</body>
+</html>
