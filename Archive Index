@@ -1,4 +1,13 @@
-/ (root)
+Root/
+├── images/
+│   ├── catcorp-logo.png        (brand logo)
+│   ├── oyr-cover.png           (future cover images)
+│   ├── eve-cover.png
+│   ├── vanitas/                <-- new series folder
+│   │   ├── vanitas-001.jpg     (cover)
+│   │   ├── vanitas-002.jpg
+│   │   ├── ...
+│   │   └── vanitas-019.jpg/ (root)
 ├── index.html               ← Hub homepage (The Reception Hall)
 ├── style.css                ← Updated for hub-wide consistency
 ├── /images/
