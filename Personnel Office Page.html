@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personnel Office — Cat Corp</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .dossier {
+            border: 1px solid #999;
+            background: #fdfdfa;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 3px 3px 0 #ddd;
+        }
+        .dossier-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        .dossier-photo {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #666;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #888;
+            /* Placeholder for a cat silhouette or photo later */
+        }
+        .dossier-name {
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+        .dossier-title {
+            font-size: 14px;
+            color: #ab3b3b;
+            font-style: italic;
+        }
+        .dossier-details {
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .dossier-details dt {
+            font-weight: bold;
+            float: left;
+            width: 130px;
+            clear: left;
+        }
+        .dossier-details dd {
+            margin-left: 140px;
+            color: #444;
+        }
+        .note-jena {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+            border-left: 3px solid #ab3b3b;
+            padding-left: 10px;
+        }
+        .contact-box {
+            background: #fbfaf5;
+            border: 1px dashed #999;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="archive-container">
+        <div class="reader-nav">
+            <a href="../index.html" class="back-link">← Return to Main Directorate</a>
+        </div>
+
+        <h2>Personnel Office</h2>
+        <p>Official employee dossiers and contact protocols for the Cat Corp directorate.</p>
+
+        <!-- Olivia's Dossier -->
+        <div class="dossier">
+            <div class="dossier-header">
+                <div class="dossier-photo">
+                    [ Photo on file ]
+                </div>
+                <div>
+                    <h3 class="dossier-name">Olivia</h3>
+                    <p class="dossier-title">Secretary, Media Sector — Clearance Level 3</p>
+                </div>
+            </div>
+            <dl class="dossier-details">
+                <dt>Employee ID:</dt>
+                <dd>CCP-EMP-002</dd>
+                <dt>Department:</dt>
+                <dd>Cultural Production — Media Division</dd>
+                <dt>Responsibilities:</dt>
+                <dd>Archival management, external correspondence, inter-departmental coordination, approval of declassified materials.</dd>
+                <dt>Status:</dt>
+                <dd>Active. Full institutional trust.</dd>
+            </dl>
+            <p class="note-jena">
+                <strong>Internal Note — Restricted:</strong> Personnel file cross-referenced with CCP-EMP-002-A (see "Jena"). Supervisors are advised that occasional shifts in demeanor are expected and do not affect work output. No action required.
+            </p>
+        </div>
+
+        <!-- Hidden Jena easter egg (linked but not listed prominently) -->
+        <p style="font-size:12px; color:#ccc; text-align:right;">
+            <a href="#" style="color:#ccc; text-decoration:none;" title="CCP-EMP-002-A">[ alt. designation: Jena ]</a>
+        </p>
+
+        <!-- Contact -->
+        <div class="contact-box">
+            <h3>Submit an Inquiry</h3>
+            <p>For permissions, collaborations, or restricted records access:</p>
+            <p><strong>Email:</strong> personnel (at) catcorp-publishing.com<br>
+            <small>(Replace with your actual contact address.)</small></p>
+            <p style="font-size:13px; color:#888;">Response times may vary. The Secretariat processes requests in order of receipt and clearance level.</p>
+        </div>
+
+        <div class="reader-nav">
+            <a href="../index.html" class="back-link">← Return to Main Directorate</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+/* --- Hub-specific styles --- */
+
+.hub-container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 40px;
+    background: #ffffff;
+    border: 3px solid #2b2b2b;
+    box-shadow: 12px 12px 0 #d9d0c1;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 50px;
+    border-bottom: 4px double #666;
+    padding-bottom: 25px;
+}
+
+.logo-large {
+    width: 140px;
+    height: auto;
+    margin-bottom: 20px;
+    filter: grayscale(100%) contrast(130%);
+}
+
+.subtitle2 {
+    font-size: 13px;
+    color: #777;
+    letter-spacing: 1px;
+    font-style: italic;
+}
+
+.directorate {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin: 40px 0;
+}
+
+.dept-card {
+    border: 2px solid #555;
+    padding: 20px;
+    background: #fcfaf5;
+    box-shadow: 4px 4px 0 #ccc;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.dept-card:hover {
+    background: #f0ece1;
+    box-shadow: 6px 6px 0 #bbb;
+}
+
+.dept-card a {
+    text-decoration: none;
+    color: #2b2b2b;
+    display: block;
+}
+
+.dept-card h2 {
+    margin-top: 0;
+    font-size: 20px;
+    letter-spacing: 2px;
+    border-bottom: 1px solid #999;
+    padding-bottom: 6px;
+}
+
+.dept-card p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.status {
+    display: block;
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #ab3b3b;
+}
+
+.dept-card.restricted .status {
+    color: #888;
+    font-style: italic;
+}
+
+footer {
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+    border-top: 1px dashed #ccc;
+    padding-top: 25px;
+    margin-top: 40px;
+}
