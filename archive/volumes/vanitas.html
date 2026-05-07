@@ -59,14 +59,13 @@
         .spread-container {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;   /* aligned top edge */
             gap: 10px;
             margin: 20px 0;
-            min-height: 400px;
-            flex-wrap: wrap;
+            /* NO flex-wrap – always side‑by‑side */
         }
         .spread-container img {
-            width: calc(50% - 5px);
+            width: calc(50% - 5px);    /* each takes half minus gap */
             height: auto;
             border: 1px solid #ccc;
             box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
@@ -114,7 +113,7 @@
             align-items: flex-start;
             gap: 10px;
             margin-bottom: 30px;
-            flex-wrap: wrap;
+            /* also no wrap for horizontal pairing */
         }
         .scroll-spread img {
             width: calc(50% - 5px);
@@ -134,12 +133,9 @@
             padding-top: 20px;
             border-top: 1px dashed #ccc;
         }
-        @media (max-width: 600px) {
-            .spread-container img,
-            .scroll-spread img {
-                width: 100%;
-            }
-        }
+
+        /* On very narrow screens (optional) we could revert to vertical,
+           but for now we keep horizontally side‑by‑side */
     </style>
 </head>
 <body>
@@ -168,7 +164,7 @@
 
         <!-- Scroll view (hidden initially) -->
         <div id="scroll-view" class="scroll-view" style="display:none;">
-            <!-- dynamically filled by JS -->
+            <!-- filled by JS -->
         </div>
 
         <div class="end-note">
@@ -178,13 +174,10 @@
 
     <script>
         (function() {
-            // Image data: define the spreads
-            // Array of arrays: each inner array lists the image filenames for that view.
-            // First is cover (single), then spreads of 2 pages each.
             const imageBase = "../../images/vanitas/";
             const spreads = [
-                ["vanitas-001.jpg"],                    // cover (single)
-                ["vanitas-002.jpg", "vanitas-003.jpg"],  // spread 1
+                ["vanitas-001.jpg"],                     // cover
+                ["vanitas-002.jpg", "vanitas-003.jpg"],
                 ["vanitas-004.jpg", "vanitas-005.jpg"],
                 ["vanitas-006.jpg", "vanitas-007.jpg"],
                 ["vanitas-008.jpg", "vanitas-009.jpg"],
@@ -195,19 +188,17 @@
                 ["vanitas-018.jpg", "vanitas-019.jpg"]
             ];
 
-            let currentSpread = 0; // 0 = cover, 1 = first spread, etc.
+            let currentSpread = 0;
 
-            // DOM elements
-            const spreadView = document.getElementById("spread-view");
-            const scrollView = document.getElementById("scroll-view");
+            const spreadView    = document.getElementById("spread-view");
+            const scrollView    = document.getElementById("scroll-view");
             const spreadDisplay = document.getElementById("spread-display");
-            const prevBtn = document.getElementById("prev-spread");
-            const nextBtn = document.getElementById("next-spread");
-            const spreadIndicator = document.getElementById("spread-indicator");
-            const btnSpread = document.getElementById("btn-spread");
-            const btnScroll = document.getElementById("btn-scroll");
+            const prevBtn       = document.getElementById("prev-spread");
+            const nextBtn       = document.getElementById("next-spread");
+            const indicator     = document.getElementById("spread-indicator");
+            const btnSpread     = document.getElementById("btn-spread");
+            const btnScroll     = document.getElementById("btn-scroll");
 
-            // Render current spread
             function renderSpread() {
                 const images = spreads[currentSpread];
                 let html = '';
@@ -222,15 +213,11 @@
                             </div>`;
                 }
                 spreadDisplay.innerHTML = html;
-                // Update navigation buttons
                 prevBtn.disabled = (currentSpread === 0);
                 nextBtn.disabled = (currentSpread === spreads.length - 1);
-                // Update indicator
-                const totalSpreads = spreads.length;
-                spreadIndicator.textContent = `Spread ${currentSpread + 1} of ${totalSpreads}`;
+                indicator.textContent = `Spread ${currentSpread + 1} of ${spreads.length}`;
             }
 
-            // Event listeners for arrows
             prevBtn.addEventListener("click", () => {
                 if (currentSpread > 0) {
                     currentSpread--;
@@ -244,29 +231,25 @@
                 }
             });
 
-            // Switch to spread mode
+            // Mode switching
             btnSpread.addEventListener("click", () => {
                 spreadView.style.display = "block";
                 scrollView.style.display = "none";
                 btnSpread.classList.add("active");
                 btnScroll.classList.remove("active");
-                // Re-render in case we changed
                 renderSpread();
             });
 
-            // Switch to scroll mode
             btnScroll.addEventListener("click", () => {
                 spreadView.style.display = "none";
                 scrollView.style.display = "block";
                 btnScroll.classList.add("active");
                 btnSpread.classList.remove("active");
-                // Build scroll view if not already built
                 if (scrollView.children.length === 0) {
                     buildScrollView();
                 }
             });
 
-            // Build scroll view: show cover then spreads
             function buildScrollView() {
                 let html = '';
                 for (let i = 0; i < spreads.length; i++) {
@@ -285,9 +268,7 @@
                 scrollView.innerHTML = html;
             }
 
-            // Initialize: default to spread mode, page 0
-            renderSpread();
-            // Keep scroll view initially empty; built on demand
+            renderSpread();   // initial load
         })();
     </script>
 </body>
