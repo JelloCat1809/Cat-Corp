@@ -1,0 +1,15 @@
+/ (root)
+├── index.html               ← Hub homepage (The Reception Hall)
+├── style.css                ← Updated for hub-wide consistency
+├── /images/
+│   ├── catcorp-logo.png
+│   └── ministry-seal.png
+├── /archive/
+│   ├── index.html           ← Archive directory (your existing volume list)
+│   └── volumes/             ← Comic reader pages
+├── /development/
+│   ├── index.html           ← Future projects teaser page
+├── /personnel/
+│   ├── index.html           ← About, contact, maybe future character blog
+├── /restricted/
+│   └── index.html           ← Pitch bible portal (password-gated or link-obfuscated)
