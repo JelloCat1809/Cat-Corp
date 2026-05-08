@@ -52,7 +52,7 @@
             font-weight: bold;
         }
 
-        /* Spread view – container for current page(s) */
+        /* Spread view */
         .spread-view {
             text-align: center;
         }
@@ -63,7 +63,6 @@
             gap: 10px;
             margin: 20px 0;
         }
-        /* Desktop: two-page spread images side by side */
         .spread-container img {
             width: calc(50% - 5px);
             height: auto;
@@ -71,7 +70,6 @@
             box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
             display: block;
         }
-        /* Single-image containers (cover on desktop, or any page on mobile) */
         .spread-container.single-image img {
             width: auto;
             max-width: 70%;
@@ -104,7 +102,28 @@
             margin-top: 10px;
         }
 
-        /* Scroll view – always single pages stacked vertically */
+        /* End-of-story return link (spread view) */
+        #end-return-spread {
+            display: none;
+            margin-top: 20px;
+        }
+        #end-return-spread a {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 6px 16px;
+            background: #fdfaf4;
+            border: 1px solid #ab3b3b;
+            text-decoration: none;
+            color: #ab3b3b;
+            box-shadow: 2px 2px 0 #ccc;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+        #end-return-spread a:hover {
+            background: #f0ece1;
+        }
+
+        /* Scroll view */
         .scroll-view {
             text-align: center;
         }
@@ -118,6 +137,28 @@
             box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
             display: inline-block;
         }
+
+        /* End-of-story return in scroll view */
+        .scroll-end-return {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .scroll-end-return a {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 6px 16px;
+            background: #fdfaf4;
+            border: 1px solid #ab3b3b;
+            text-decoration: none;
+            color: #ab3b3b;
+            box-shadow: 2px 2px 0 #ccc;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .scroll-end-return a:hover {
+            background: #f0ece1;
+        }
+
         .end-note {
             text-align: center;
             font-size: 12px;
@@ -126,8 +167,6 @@
             padding-top: 20px;
             border-top: 1px dashed #ccc;
         }
-
-        /* On mobile, single-image mode already shows full width; no extra stacking needed */
     </style>
 </head>
 <body>
@@ -152,6 +191,9 @@
                 <button id="next-spread">Next ▶</button>
             </div>
             <div class="page-indicator" id="spread-indicator"></div>
+            <div id="end-return-spread">
+                <a href="../series/vanitas.html">↺ Return to Title Page</a>
+            </div>
         </div>
 
         <!-- Scroll view (hidden initially) -->
@@ -166,13 +208,11 @@
         (function() {
             const imageBase = "../../images/vanitas/";
 
-            // All 19 page filenames in order
             const allPages = Array.from({ length: 19 }, (_, i) => {
                 const num = String(i + 1).padStart(3, '0');
                 return `vanitas-${num}.jpg`;
             });
 
-            // Desktop spreads: cover alone, then pairs
             const desktopSpreads = [
                 [allPages[0]],
                 [allPages[1], allPages[2]],
@@ -186,18 +226,14 @@
                 [allPages[17], allPages[18]]
             ];
 
-            // Mobile single‑page “spreads” – each entry is an array of one image
             const mobilePages = allPages.map(p => [p]);
 
-            // Viewport detection
             const mobileQuery = window.matchMedia('(max-width: 600px)');
             let isMobile = mobileQuery.matches;
 
-            // Current indices
-            let currentSpreadIdx = 0;   // for desktop spreads
-            let currentPageIdx = 0;     // for mobile single pages
+            let currentSpreadIdx = 0;
+            let currentPageIdx = 0;
 
-            // DOM elements
             const spreadView = document.getElementById("spread-view");
             const scrollView = document.getElementById("scroll-view");
             const spreadDisplay = document.getElementById("spread-display");
@@ -206,8 +242,8 @@
             const indicator = document.getElementById("spread-indicator");
             const btnSpread = document.getElementById("btn-spread");
             const btnScroll = document.getElementById("btn-scroll");
+            const endReturnDiv = document.getElementById("end-return-spread");
 
-            // Get the correct dataset and index for the current viewport
             function getCurrentData() {
                 if (isMobile) {
                     return { dataset: mobilePages, idx: currentPageIdx, total: mobilePages.length, label: 'Page' };
@@ -216,17 +252,14 @@
                 }
             }
 
-            // Convert indices when switching between mobile/desktop
             function syncIndices(mobilenow) {
                 if (mobilenow) {
-                    // converting from desktop spread index to mobile page index
                     if (currentSpreadIdx === 0) {
                         currentPageIdx = 0;
                     } else {
-                        currentPageIdx = 2 * currentSpreadIdx - 1;  // first page of that spread
+                        currentPageIdx = 2 * currentSpreadIdx - 1;
                     }
                 } else {
-                    // converting from mobile page index to desktop spread index
                     if (currentPageIdx === 0) {
                         currentSpreadIdx = 0;
                     } else {
@@ -235,30 +268,33 @@
                 }
             }
 
-            // Render the current page/spread
             function render() {
                 const { dataset, idx, total, label } = getCurrentData();
                 const images = dataset[idx];
                 const isSingle = images.length === 1;
 
-                // Build HTML
                 let containerClass = 'spread-container';
                 if (isSingle) containerClass += ' single-image';
 
                 let html = `<div class="${containerClass}">`;
-                images.forEach((src, i) => {
+                images.forEach(src => {
                     html += `<img src="${imageBase}${src}" alt="Page">`;
                 });
                 html += `</div>`;
                 spreadDisplay.innerHTML = html;
 
-                // Update navigation
                 prevBtn.disabled = (idx === 0);
                 nextBtn.disabled = (idx === total - 1);
                 indicator.textContent = `${label} ${idx + 1} of ${total}`;
+
+                // Show "Return to Title Page" button only at the very end
+                if (idx === total - 1) {
+                    endReturnDiv.style.display = 'block';
+                } else {
+                    endReturnDiv.style.display = 'none';
+                }
             }
 
-            // Arrow button handlers – operate on the current active index
             prevBtn.addEventListener('click', () => {
                 if (isMobile) {
                     if (currentPageIdx > 0) { currentPageIdx--; }
@@ -277,7 +313,6 @@
                 render();
             });
 
-            // Switch between Spread and Scroll views
             btnSpread.addEventListener('click', () => {
                 spreadView.style.display = 'block';
                 scrollView.style.display = 'none';
@@ -291,29 +326,32 @@
                 scrollView.style.display = 'block';
                 btnScroll.classList.add('active');
                 btnSpread.classList.remove('active');
-                // Build scroll view if empty (once)
                 if (scrollView.children.length === 0) {
-                    let html = '';
-                    allPages.forEach(src => {
-                        html += `<div class="scroll-page"><img src="${imageBase}${src}" alt="Page"></div>`;
-                    });
-                    scrollView.innerHTML = html;
+                    buildScrollView();
                 }
             });
 
-            // Viewport change handler
+            function buildScrollView() {
+                let html = '';
+                allPages.forEach((src, i) => {
+                    html += `<div class="scroll-page"><img src="${imageBase}${src}" alt="Page ${i+1}"></div>`;
+                });
+                // Add "Return to Title Page" link at the end
+                html += `<div class="scroll-end-return">
+                            <a href="../series/vanitas.html">↺ Return to Title Page</a>
+                         </div>`;
+                scrollView.innerHTML = html;
+            }
+
             mobileQuery.addEventListener('change', (e) => {
                 const newIsMobile = e.matches;
                 if (newIsMobile !== isMobile) {
-                    syncIndices(newIsMobile);   // convert current index before switching
+                    syncIndices(newIsMobile);
                     isMobile = newIsMobile;
                     render();
                 }
             });
 
-            // Initial render
-            // Ensure indices are consistent with initial viewport
-            // (on load they are both 0 so no conversion needed)
             render();
         })();
     </script>
