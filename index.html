@@ -140,10 +140,10 @@
             font-family: 'Courier New', monospace;
             font-size: 16px;
             font-weight: bold;
-            color: #1a1a1a;                     /* black */
+            color: #1a1a1a;
             transform: translate(-50%, -50%);
         }
-        /* Hands – all black */
+        /* Hands – all black, except second hand red */
         .hour-hand, .minute-hand, .second-hand {
             position: absolute;
             bottom: 50%;
@@ -167,7 +167,7 @@
             width: 1px;
             height: 56px;
             margin-left: -0.5px;
-            background: #c0392b;                 /* subtle red for second hand */
+            background: #c0392b;
             box-shadow: 0 0 2px #c0392b;
         }
         .center-dot {
@@ -193,14 +193,12 @@
         </header>
 
         <div class="clock-panel">
-            <!-- Hanoi Office Clock -->
             <div class="clock-wrapper">
                 <p class="clock-label">Cat Corp HQ · Hanoi</p>
                 <div class="vintage-clock" id="clock-hanoi">
                     <div class="clock-face"></div>
                 </div>
             </div>
-            <!-- Visitor Local Clock -->
             <div class="clock-wrapper">
                 <p class="clock-label">Your Local Time</p>
                 <div class="vintage-clock" id="clock-local">
@@ -251,7 +249,7 @@
 
     <script>
     (function() {
-      // Standard numbers 1-12, with 12 at the top
+      // Correct array: '12' at index 0 (top), then '1', '2', ... '11'
       const hourNumbers = ['12','1','2','3','4','5','6','7','8','9','10','11'];
 
       function buildClockFace(clockId) {
@@ -260,7 +258,6 @@
         const face = clock.querySelector('.clock-face');
         if (!face) return;
         if (!face.querySelector('.hour-hand')) {
-          // Create hands
           const hour = document.createElement('div');
           hour.className = 'hour-hand';
           hour.id = 'hour-' + clockId.split('-')[1];
@@ -279,16 +276,17 @@
         }
         if (!face.querySelector('.clock-numeral')) {
           const clockWidth = clock.offsetWidth;
-          const radius = (clockWidth / 2) * 0.78;
+          const radius = (clockWidth / 2) * 0.78; // 78% of face radius
           const centerX = clockWidth / 2;
           const centerY = clockWidth / 2;
 
           for (let i = 0; i < 12; i++) {
-            const hour = i + 1; // 1...12
-            const angle = (hour * 30) - 90;
-            const rad = angle * (Math.PI / 180);
-            const x = centerX + radius * Math.cos(rad);
-            const y = centerY + radius * Math.sin(rad);
+            // i=0 -> '12' at top (hour=12), i=1 -> '1' at hour=1, ...
+            const hour = (i === 0) ? 12 : i;
+            const angleDeg = (hour * 30) - 90;  // -90° to start at 12 o'clock
+            const angleRad = angleDeg * (Math.PI / 180);
+            const x = centerX + radius * Math.cos(angleRad);
+            const y = centerY + radius * Math.sin(angleRad);
 
             const num = document.createElement('span');
             num.className = 'clock-numeral';
