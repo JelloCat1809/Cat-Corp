@@ -123,13 +123,12 @@
             height: 160px;
             border-radius: 50%;
             background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 90%);
-            border: 4px solid #c9b16e;         /* aged brass/gold rim */
-            box-shadow:
+            border: 4px solid #1a1a1a;          /* Black rim, not yellow */
+            box-shadow: 
                 inset 0 0 20px rgba(0,0,0,0.8),
                 4px 4px 0 rgba(0,0,0,0.3);
             position: relative;
             display: inline-block;
-            /* subtle paper‑grit and grain */
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
         }
         .clock-face {
@@ -137,23 +136,21 @@
             height: 100%;
             position: relative;
         }
-        /* Roman numerals – injected by JS, styled here */
         .roman-numeral {
             position: absolute;
             font-family: 'Times New Roman', serif;
             font-size: 16px;
-            color: #c9b16e;
+            color: #f0ede4;                  /* off‑white for readability */
             font-weight: bold;
             transform: translate(-50%, -50%);
             text-shadow: 0 0 3px rgba(0,0,0,0.5);
         }
-        /* Hands */
         .hour-hand, .minute-hand, .second-hand {
             position: absolute;
             bottom: 50%;
             left: 50%;
             transform-origin: bottom center;
-            background: #d4c4a8;               /* pale gold / aged ivory */
+            background: #d4c4a8;               /* pale ivory */
             box-shadow: 0 0 4px rgba(0,0,0,0.5);
             border-radius: 2px;
         }
@@ -180,12 +177,12 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 10px;
-            height: 10px;
-            background: #c9b16e;
+            width: 8px;
+            height: 8px;
+            background: #f0ede4;              /* silver/white */
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 6px rgba(0,0,0,0.8);
+            box-shadow: 0 0 4px rgba(0,0,0,0.8);
         }
     </style>
 </head>
@@ -198,16 +195,13 @@
             <p style="font-size:13px; color:#777; letter-spacing:1px; font-style:italic;">Est. ████ — Reactivated for Public Service</p>
         </header>
 
-        <!-- Two vintage wall clocks -->
         <div class="clock-panel">
-            <!-- Hanoi Office Clock -->
             <div class="clock-wrapper">
                 <p class="clock-label">Cat Corp HQ · Hanoi</p>
                 <div class="vintage-clock" id="clock-hanoi">
                     <div class="clock-face"></div>
                 </div>
             </div>
-            <!-- Visitor Local Clock -->
             <div class="clock-wrapper">
                 <p class="clock-label">Your Local Time</p>
                 <div class="vintage-clock" id="clock-local">
@@ -258,18 +252,14 @@
 
     <script>
     (function() {
-      // Roman numerals for clock hours (1-12)
       const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
-      // Inject clock hands and Roman numerals into each clock face
       function buildClockFace(clockId) {
         const clock = document.getElementById(clockId);
         if (!clock) return;
         const face = clock.querySelector('.clock-face');
         if (!face) return;
-        // Only build if hands don't already exist
         if (!face.querySelector('.hour-hand')) {
-          // Add hands
           const hour = document.createElement('div');
           hour.className = 'hour-hand';
           hour.id = 'hour-' + clockId.split('-')[1];
@@ -286,17 +276,15 @@
           face.appendChild(second);
           face.appendChild(dot);
         }
-        // Add Roman numerals if not already present
         if (!face.querySelector('.roman-numeral')) {
           const clockWidth = clock.offsetWidth;
-          const radius = (clockWidth / 2) * 0.78; // distance from center to numeral
+          const radius = (clockWidth / 2) * 0.78;
           const centerX = clockWidth / 2;
           const centerY = clockWidth / 2;
 
           for (let i = 0; i < 12; i++) {
             const hour = i + 1;
-            // 12 is at top (90° up), 1 is at 30° to the right of 12, etc.
-            const angle = (hour * 30) - 90; // -90° to start at 12 o'clock
+            const angle = (hour * 30) - 90;
             const rad = angle * (Math.PI / 180);
             const x = centerX + radius * Math.cos(rad);
             const y = centerY + radius * Math.sin(rad);
