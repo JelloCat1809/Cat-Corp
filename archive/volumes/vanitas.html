@@ -52,7 +52,7 @@
             font-weight: bold;
         }
 
-        /* Spread view (page‑flip) */
+        /* Spread view – container for current page(s) */
         .spread-view {
             text-align: center;
         }
@@ -63,6 +63,7 @@
             gap: 10px;
             margin: 20px 0;
         }
+        /* Desktop: two-page spread images side by side */
         .spread-container img {
             width: calc(50% - 5px);
             height: auto;
@@ -70,7 +71,8 @@
             box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
             display: block;
         }
-        .spread-container.single-cover img {
+        /* Single-image containers (cover on desktop, or any page on mobile) */
+        .spread-container.single-image img {
             width: auto;
             max-width: 70%;
         }
@@ -102,7 +104,7 @@
             margin-top: 10px;
         }
 
-        /* Scroll view – vertical single pages */
+        /* Scroll view – always single pages stacked vertically */
         .scroll-view {
             text-align: center;
         }
@@ -125,20 +127,7 @@
             border-top: 1px dashed #ccc;
         }
 
-        /* Mobile fix: stack spreads vertically on narrow screens */
-        @media (max-width: 600px) {
-            .spread-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .spread-container img {
-                width: 100% !important;
-                max-width: 500px;   /* prevents stretching beyond image quality */
-            }
-            .spread-container.single-cover img {
-                max-width: 100%;
-            }
-        }
+        /* On mobile, single-image mode already shows full width; no extra stacking needed */
     </style>
 </head>
 <body>
@@ -166,9 +155,7 @@
         </div>
 
         <!-- Scroll view (hidden initially) -->
-        <div id="scroll-view" class="scroll-view" style="display:none;">
-            <!-- filled by JS -->
-        </div>
+        <div id="scroll-view" class="scroll-view" style="display:none;"></div>
 
         <div class="end-note">
             End of declassified document. — Cat Corp Archives
@@ -178,102 +165,156 @@
     <script>
         (function() {
             const imageBase = "../../images/vanitas/";
-            // Spreads for flip view: cover (single), then pairs
-            const spreads = [
-                ["vanitas-001.jpg"],
-                ["vanitas-002.jpg", "vanitas-003.jpg"],
-                ["vanitas-004.jpg", "vanitas-005.jpg"],
-                ["vanitas-006.jpg", "vanitas-007.jpg"],
-                ["vanitas-008.jpg", "vanitas-009.jpg"],
-                ["vanitas-010.jpg", "vanitas-011.jpg"],
-                ["vanitas-012.jpg", "vanitas-013.jpg"],
-                ["vanitas-014.jpg", "vanitas-015.jpg"],
-                ["vanitas-016.jpg", "vanitas-017.jpg"],
-                ["vanitas-018.jpg", "vanitas-019.jpg"]
+
+            // All 19 page filenames in order
+            const allPages = Array.from({ length: 19 }, (_, i) => {
+                const num = String(i + 1).padStart(3, '0');
+                return `vanitas-${num}.jpg`;
+            });
+
+            // Desktop spreads: cover alone, then pairs
+            const desktopSpreads = [
+                [allPages[0]],
+                [allPages[1], allPages[2]],
+                [allPages[3], allPages[4]],
+                [allPages[5], allPages[6]],
+                [allPages[7], allPages[8]],
+                [allPages[9], allPages[10]],
+                [allPages[11], allPages[12]],
+                [allPages[13], allPages[14]],
+                [allPages[15], allPages[16]],
+                [allPages[17], allPages[18]]
             ];
 
-            // All 19 pages in order for vertical scroll
-            const allPages = [];
-            for (let i = 1; i <= 19; i++) {
-                const num = i.toString().padStart(3, '0');
-                allPages.push(`vanitas-${num}.jpg`);
-            }
+            // Mobile single‑page “spreads” – each entry is an array of one image
+            const mobilePages = allPages.map(p => [p]);
 
-            let currentSpread = 0;
+            // Viewport detection
+            const mobileQuery = window.matchMedia('(max-width: 600px)');
+            let isMobile = mobileQuery.matches;
 
-            const spreadView    = document.getElementById("spread-view");
-            const scrollView    = document.getElementById("scroll-view");
+            // Current indices
+            let currentSpreadIdx = 0;   // for desktop spreads
+            let currentPageIdx = 0;     // for mobile single pages
+
+            // DOM elements
+            const spreadView = document.getElementById("spread-view");
+            const scrollView = document.getElementById("scroll-view");
             const spreadDisplay = document.getElementById("spread-display");
-            const prevBtn       = document.getElementById("prev-spread");
-            const nextBtn       = document.getElementById("next-spread");
-            const indicator     = document.getElementById("spread-indicator");
-            const btnSpread     = document.getElementById("btn-spread");
-            const btnScroll     = document.getElementById("btn-scroll");
+            const prevBtn = document.getElementById("prev-spread");
+            const nextBtn = document.getElementById("next-spread");
+            const indicator = document.getElementById("spread-indicator");
+            const btnSpread = document.getElementById("btn-spread");
+            const btnScroll = document.getElementById("btn-scroll");
 
-            function renderSpread() {
-                const images = spreads[currentSpread];
-                let html = '';
-                if (images.length === 1) {
-                    html = `<div class="spread-container single-cover">
-                                <img src="${imageBase}${images[0]}" alt="Page">
-                            </div>`;
+            // Get the correct dataset and index for the current viewport
+            function getCurrentData() {
+                if (isMobile) {
+                    return { dataset: mobilePages, idx: currentPageIdx, total: mobilePages.length, label: 'Page' };
                 } else {
-                    html = `<div class="spread-container">
-                                <img src="${imageBase}${images[0]}" alt="Left page">
-                                <img src="${imageBase}${images[1]}" alt="Right page">
-                            </div>`;
+                    return { dataset: desktopSpreads, idx: currentSpreadIdx, total: desktopSpreads.length, label: 'Spread' };
                 }
+            }
+
+            // Convert indices when switching between mobile/desktop
+            function syncIndices(mobilenow) {
+                if (mobilenow) {
+                    // converting from desktop spread index to mobile page index
+                    if (currentSpreadIdx === 0) {
+                        currentPageIdx = 0;
+                    } else {
+                        currentPageIdx = 2 * currentSpreadIdx - 1;  // first page of that spread
+                    }
+                } else {
+                    // converting from mobile page index to desktop spread index
+                    if (currentPageIdx === 0) {
+                        currentSpreadIdx = 0;
+                    } else {
+                        currentSpreadIdx = Math.floor((currentPageIdx + 1) / 2);
+                    }
+                }
+            }
+
+            // Render the current page/spread
+            function render() {
+                const { dataset, idx, total, label } = getCurrentData();
+                const images = dataset[idx];
+                const isSingle = images.length === 1;
+
+                // Build HTML
+                let containerClass = 'spread-container';
+                if (isSingle) containerClass += ' single-image';
+
+                let html = `<div class="${containerClass}">`;
+                images.forEach((src, i) => {
+                    html += `<img src="${imageBase}${src}" alt="Page">`;
+                });
+                html += `</div>`;
                 spreadDisplay.innerHTML = html;
-                prevBtn.disabled = (currentSpread === 0);
-                nextBtn.disabled = (currentSpread === spreads.length - 1);
-                indicator.textContent = `Spread ${currentSpread + 1} of ${spreads.length}`;
+
+                // Update navigation
+                prevBtn.disabled = (idx === 0);
+                nextBtn.disabled = (idx === total - 1);
+                indicator.textContent = `${label} ${idx + 1} of ${total}`;
             }
 
-            prevBtn.addEventListener("click", () => {
-                if (currentSpread > 0) {
-                    currentSpread--;
-                    renderSpread();
+            // Arrow button handlers – operate on the current active index
+            prevBtn.addEventListener('click', () => {
+                if (isMobile) {
+                    if (currentPageIdx > 0) { currentPageIdx--; }
+                } else {
+                    if (currentSpreadIdx > 0) { currentSpreadIdx--; }
                 }
-            });
-            nextBtn.addEventListener("click", () => {
-                if (currentSpread < spreads.length - 1) {
-                    currentSpread++;
-                    renderSpread();
-                }
+                render();
             });
 
-            // Build scroll view: vertical single pages
-            function buildScrollView() {
-                let html = '';
-                for (let i = 0; i < allPages.length; i++) {
-                    html += `<div class="scroll-page">
-                                <img src="${imageBase}${allPages[i]}" alt="Page ${i + 1}">
-                             </div>`;
+            nextBtn.addEventListener('click', () => {
+                if (isMobile) {
+                    if (currentPageIdx < mobilePages.length - 1) { currentPageIdx++; }
+                } else {
+                    if (currentSpreadIdx < desktopSpreads.length - 1) { currentSpreadIdx++; }
                 }
-                scrollView.innerHTML = html;
-            }
-
-            // Mode switching
-            btnSpread.addEventListener("click", () => {
-                spreadView.style.display = "block";
-                scrollView.style.display = "none";
-                btnSpread.classList.add("active");
-                btnScroll.classList.remove("active");
-                renderSpread();
+                render();
             });
 
-            btnScroll.addEventListener("click", () => {
-                spreadView.style.display = "none";
-                scrollView.style.display = "block";
-                btnScroll.classList.add("active");
-                btnSpread.classList.remove("active");
+            // Switch between Spread and Scroll views
+            btnSpread.addEventListener('click', () => {
+                spreadView.style.display = 'block';
+                scrollView.style.display = 'none';
+                btnSpread.classList.add('active');
+                btnScroll.classList.remove('active');
+                render();
+            });
+
+            btnScroll.addEventListener('click', () => {
+                spreadView.style.display = 'none';
+                scrollView.style.display = 'block';
+                btnScroll.classList.add('active');
+                btnSpread.classList.remove('active');
+                // Build scroll view if empty (once)
                 if (scrollView.children.length === 0) {
-                    buildScrollView();
+                    let html = '';
+                    allPages.forEach(src => {
+                        html += `<div class="scroll-page"><img src="${imageBase}${src}" alt="Page"></div>`;
+                    });
+                    scrollView.innerHTML = html;
                 }
             });
 
-            // Initial load
-            renderSpread();
+            // Viewport change handler
+            mobileQuery.addEventListener('change', (e) => {
+                const newIsMobile = e.matches;
+                if (newIsMobile !== isMobile) {
+                    syncIndices(newIsMobile);   // convert current index before switching
+                    isMobile = newIsMobile;
+                    render();
+                }
+            });
+
+            // Initial render
+            // Ensure indices are consistent with initial viewport
+            // (on load they are both 0 so no conversion needed)
+            render();
         })();
     </script>
 </body>
