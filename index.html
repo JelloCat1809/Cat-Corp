@@ -99,7 +99,7 @@
             }
         }
 
-        /* ---------- Vintage Black Clocks ---------- */
+        /* ---------- White Wall Clocks ---------- */
         .clock-panel {
             display: flex;
             justify-content: center;
@@ -122,55 +122,52 @@
             width: 160px;
             height: 160px;
             border-radius: 50%;
-            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 90%);
-            border: 4px solid #1a1a1a;          /* Black rim, not yellow */
+            background: #fdfdfa;                /* white face */
+            border: 3px solid #2b2b2b;           /* black rim */
             box-shadow: 
-                inset 0 0 20px rgba(0,0,0,0.8),
-                4px 4px 0 rgba(0,0,0,0.3);
+                inset 0 0 10px rgba(0,0,0,0.05),
+                4px 4px 0 rgba(0,0,0,0.2);
             position: relative;
             display: inline-block;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
         }
         .clock-face {
             width: 100%;
             height: 100%;
             position: relative;
         }
-        .roman-numeral {
+        .clock-numeral {
             position: absolute;
-            font-family: 'Times New Roman', serif;
+            font-family: 'Courier New', monospace;
             font-size: 16px;
-            color: #f0ede4;                  /* off‑white for readability */
             font-weight: bold;
+            color: #1a1a1a;                     /* black */
             transform: translate(-50%, -50%);
-            text-shadow: 0 0 3px rgba(0,0,0,0.5);
         }
+        /* Hands – all black */
         .hour-hand, .minute-hand, .second-hand {
             position: absolute;
             bottom: 50%;
             left: 50%;
             transform-origin: bottom center;
-            background: #d4c4a8;               /* pale ivory */
-            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+            background: #1a1a1a;
+            box-shadow: 0 0 2px rgba(0,0,0,0.3);
             border-radius: 2px;
         }
         .hour-hand {
             width: 4px;
             height: 32px;
             margin-left: -2px;
-            background: #e6d7b4;
         }
         .minute-hand {
             width: 3px;
             height: 48px;
             margin-left: -1.5px;
-            background: #d4c4a8;
         }
         .second-hand {
             width: 1px;
-            height: 58px;
+            height: 56px;
             margin-left: -0.5px;
-            background: #c0392b;              /* subtle red */
+            background: #c0392b;                 /* subtle red for second hand */
             box-shadow: 0 0 2px #c0392b;
         }
         .center-dot {
@@ -179,10 +176,10 @@
             left: 50%;
             width: 8px;
             height: 8px;
-            background: #f0ede4;              /* silver/white */
+            background: #1a1a1a;
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 4px rgba(0,0,0,0.8);
+            box-shadow: 0 0 3px rgba(0,0,0,0.5);
         }
     </style>
 </head>
@@ -196,12 +193,14 @@
         </header>
 
         <div class="clock-panel">
+            <!-- Hanoi Office Clock -->
             <div class="clock-wrapper">
                 <p class="clock-label">Cat Corp HQ · Hanoi</p>
                 <div class="vintage-clock" id="clock-hanoi">
                     <div class="clock-face"></div>
                 </div>
             </div>
+            <!-- Visitor Local Clock -->
             <div class="clock-wrapper">
                 <p class="clock-label">Your Local Time</p>
                 <div class="vintage-clock" id="clock-local">
@@ -252,7 +251,8 @@
 
     <script>
     (function() {
-      const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+      // Standard numbers 1-12, with 12 at the top
+      const hourNumbers = ['12','1','2','3','4','5','6','7','8','9','10','11'];
 
       function buildClockFace(clockId) {
         const clock = document.getElementById(clockId);
@@ -260,6 +260,7 @@
         const face = clock.querySelector('.clock-face');
         if (!face) return;
         if (!face.querySelector('.hour-hand')) {
+          // Create hands
           const hour = document.createElement('div');
           hour.className = 'hour-hand';
           hour.id = 'hour-' + clockId.split('-')[1];
@@ -276,25 +277,25 @@
           face.appendChild(second);
           face.appendChild(dot);
         }
-        if (!face.querySelector('.roman-numeral')) {
+        if (!face.querySelector('.clock-numeral')) {
           const clockWidth = clock.offsetWidth;
           const radius = (clockWidth / 2) * 0.78;
           const centerX = clockWidth / 2;
           const centerY = clockWidth / 2;
 
           for (let i = 0; i < 12; i++) {
-            const hour = i + 1;
+            const hour = i + 1; // 1...12
             const angle = (hour * 30) - 90;
             const rad = angle * (Math.PI / 180);
             const x = centerX + radius * Math.cos(rad);
             const y = centerY + radius * Math.sin(rad);
 
-            const numeral = document.createElement('span');
-            numeral.className = 'roman-numeral';
-            numeral.textContent = romanNumerals[i];
-            numeral.style.left = x + 'px';
-            numeral.style.top = y + 'px';
-            face.appendChild(numeral);
+            const num = document.createElement('span');
+            num.className = 'clock-numeral';
+            num.textContent = hourNumbers[i];
+            num.style.left = x + 'px';
+            num.style.top = y + 'px';
+            face.appendChild(num);
           }
         }
       }
