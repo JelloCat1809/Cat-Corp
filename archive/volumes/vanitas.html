@@ -52,20 +52,19 @@
             font-weight: bold;
         }
 
-        /* Spread view */
+        /* Spread view (page‑flip) */
         .spread-view {
             text-align: center;
         }
         .spread-container {
             display: flex;
             justify-content: center;
-            align-items: flex-start;   /* aligned top edge */
+            align-items: flex-start;
             gap: 10px;
             margin: 20px 0;
-            /* NO flex-wrap – always side‑by‑side */
         }
         .spread-container img {
-            width: calc(50% - 5px);    /* each takes half minus gap */
+            width: calc(50% - 5px);
             height: auto;
             border: 1px solid #ccc;
             box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
@@ -103,27 +102,19 @@
             margin-top: 10px;
         }
 
-        /* Scroll view */
+        /* Scroll view – vertical single pages */
         .scroll-view {
             text-align: center;
         }
-        .scroll-spread {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 10px;
+        .scroll-page {
             margin-bottom: 30px;
-            /* also no wrap for horizontal pairing */
         }
-        .scroll-spread img {
-            width: calc(50% - 5px);
+        .scroll-page img {
+            max-width: 100%;
             height: auto;
             border: 1px solid #ccc;
             box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
-        }
-        .scroll-spread.single-cover img {
-            width: auto;
-            max-width: 70%;
+            display: inline-block; /* allows centering */
         }
         .end-note {
             text-align: center;
@@ -133,9 +124,6 @@
             padding-top: 20px;
             border-top: 1px dashed #ccc;
         }
-
-        /* On very narrow screens (optional) we could revert to vertical,
-           but for now we keep horizontally side‑by‑side */
     </style>
 </head>
 <body>
@@ -175,8 +163,9 @@
     <script>
         (function() {
             const imageBase = "../../images/vanitas/";
+            // Spreads for flip view: cover (single), then pairs
             const spreads = [
-                ["vanitas-001.jpg"],                     // cover
+                ["vanitas-001.jpg"],
                 ["vanitas-002.jpg", "vanitas-003.jpg"],
                 ["vanitas-004.jpg", "vanitas-005.jpg"],
                 ["vanitas-006.jpg", "vanitas-007.jpg"],
@@ -187,6 +176,13 @@
                 ["vanitas-016.jpg", "vanitas-017.jpg"],
                 ["vanitas-018.jpg", "vanitas-019.jpg"]
             ];
+
+            // All 19 pages in order for vertical scroll
+            const allPages = [];
+            for (let i = 1; i <= 19; i++) {
+                const num = i.toString().padStart(3, '0');
+                allPages.push(`vanitas-${num}.jpg`);
+            }
 
             let currentSpread = 0;
 
@@ -231,6 +227,17 @@
                 }
             });
 
+            // Build scroll view: vertical single pages
+            function buildScrollView() {
+                let html = '';
+                for (let i = 0; i < allPages.length; i++) {
+                    html += `<div class="scroll-page">
+                                <img src="${imageBase}${allPages[i]}" alt="Page ${i + 1}">
+                             </div>`;
+                }
+                scrollView.innerHTML = html;
+            }
+
             // Mode switching
             btnSpread.addEventListener("click", () => {
                 spreadView.style.display = "block";
@@ -250,25 +257,8 @@
                 }
             });
 
-            function buildScrollView() {
-                let html = '';
-                for (let i = 0; i < spreads.length; i++) {
-                    const images = spreads[i];
-                    if (images.length === 1) {
-                        html += `<div class="scroll-spread single-cover">
-                                    <img src="${imageBase}${images[0]}" alt="Page">
-                                </div>`;
-                    } else {
-                        html += `<div class="scroll-spread">
-                                    <img src="${imageBase}${images[0]}" alt="Page">
-                                    <img src="${imageBase}${images[1]}" alt="Page">
-                                </div>`;
-                    }
-                }
-                scrollView.innerHTML = html;
-            }
-
-            renderSpread();   // initial load
+            // Initial load
+            renderSpread();
         })();
     </script>
 </body>
