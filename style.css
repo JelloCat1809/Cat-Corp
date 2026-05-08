@@ -116,3 +116,81 @@ footer {
     background-repeat: repeat;
     background-size: 200px 200px;
 }
+/* ---------- Vintage Black Clocks ---------- */
+.clock-panel {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+.clock-wrapper {
+  text-align: center;
+}
+.clock-label {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #555;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.vintage-clock {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 90%);
+  border: 3px solid #c9b16e;         /* aged brass/gold rim */
+  box-shadow: 
+    inset 0 0 20px rgba(0,0,0,0.8),
+    4px 4px 0 rgba(0,0,0,0.3);
+  position: relative;
+  display: inline-block;
+  /* subtle paper‑grit overlay */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+}
+.clock-face {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+/* Hands */
+.hour-hand, .minute-hand, .second-hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  background: #d4c4a8;               /* pale gold / aged ivory */
+  box-shadow: 0 0 4px rgba(0,0,0,0.5);
+  border-radius: 2px;
+}
+.hour-hand {
+  width: 4px;
+  height: 30px;
+  margin-left: -2px;
+  background: #e6d7b4;
+}
+.minute-hand {
+  width: 3px;
+  height: 45px;
+  margin-left: -1.5px;
+  background: #d4c4a8;
+}
+.second-hand {
+  width: 1px;
+  height: 55px;
+  margin-left: -0.5px;
+  background: #c0392b;              /* subtle red */
+  box-shadow: 0 0 2px #c0392b;
+}
+.center-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: #c9b16e;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 6px rgba(0,0,0,0.8);
+}
