@@ -108,7 +108,30 @@
             <p class="subtitle">Main Directorate for Cultural Production</p>
             <p style="font-size:13px; color:#777; letter-spacing:1px; font-style:italic;">Est. ████ — Reactivated for Public Service</p>
         </header>
-
+<div class="clock-panel">
+  <div class="clock-wrapper">
+    <p class="clock-label">Cat Corp HQ · Hanoi</p>
+    <div class="vintage-clock" id="clock-hanoi">
+      <div class="clock-face">
+        <div class="hour-hand" id="hour-hanoi"></div>
+        <div class="minute-hand" id="minute-hanoi"></div>
+        <div class="second-hand" id="second-hanoi"></div>
+        <div class="center-dot"></div>
+      </div>
+    </div>
+  </div>
+  <div class="clock-wrapper">
+    <p class="clock-label">Your Local Time</p>
+    <div class="vintage-clock" id="clock-local">
+      <div class="clock-face">
+        <div class="hour-hand" id="hour-local"></div>
+        <div class="minute-hand" id="minute-local"></div>
+        <div class="second-hand" id="second-local"></div>
+        <div class="center-dot"></div>
+      </div>
+    </div>
+  </div>
+</div>
         <main>
             <h2 style="margin-top:0;">Directorate Index</h2>
             <ul class="volume-list">
@@ -148,5 +171,41 @@
             <p>Cat Corp is an independent cultural entity operating under the principles of structured imagination and regulated surrealism. All inquiries are processed at the Personnel Office.</p>
         </footer>
     </div>
+<script>
+(function() {
+  function updateAnalogClock(clockId, hourHandId, minuteHandId, secondHandId, timeZone) {
+    const now = new Date();
+    const date = timeZone ? new Date(now.toLocaleString("en-US", { timeZone })) : now;
+    const hours = date.getHours() % 12;
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    const hourHand = document.getElementById(hourHandId);
+    const minuteHand = document.getElementById(minuteHandId);
+    const secondHand = document.getElementById(secondHandId);
+
+    if (!hourHand || !minuteHand || !secondHand) return;
+
+    // Calculate rotation angles (smooth continuous movement)
+    const hourAngle = (hours * 30) + (minutes * 0.5); // 360/12=30 deg per hour, plus 0.5 deg per minute
+    const minuteAngle = (minutes * 6) + (seconds * 0.1); // 360/60=6 deg per minute, plus 0.1 deg per second
+    const secondAngle = seconds * 6; // 360/60=6 deg per second
+
+    hourHand.style.transform = `rotate(${hourAngle}deg)`;
+    minuteHand.style.transform = `rotate(${minuteAngle}deg)`;
+    secondHand.style.transform = `rotate(${secondAngle}deg)`;
+  }
+
+  function tick() {
+    updateAnalogClock('clock-hanoi', 'hour-hanoi', 'minute-hanoi', 'second-hanoi', 'Asia/Ho_Chi_Minh');
+    updateAnalogClock('clock-local', 'hour-local', 'minute-local', 'second-local', null); // null = visitor local
+    requestAnimationFrame(() => {
+      setTimeout(tick, 1000); // update every second
+    });
+  }
+
+  tick();
+})();
+</script>
 </body>
 </html>
