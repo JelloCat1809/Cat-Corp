@@ -114,7 +114,7 @@
             height: auto;
             border: 1px solid #ccc;
             box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
-            display: inline-block; /* allows centering */
+            display: inline-block;
         }
         .end-note {
             text-align: center;
@@ -123,6 +123,21 @@
             margin-top: 40px;
             padding-top: 20px;
             border-top: 1px dashed #ccc;
+        }
+
+        /* Mobile fix: stack spreads vertically on narrow screens */
+        @media (max-width: 600px) {
+            .spread-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .spread-container img {
+                width: 100% !important;
+                max-width: 500px;   /* prevents stretching beyond image quality */
+            }
+            .spread-container.single-cover img {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
