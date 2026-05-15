@@ -52,7 +52,6 @@
             font-weight: bold;
         }
 
-        /* Spread view */
         .spread-view {
             text-align: center;
         }
@@ -69,8 +68,9 @@
             border: 1px solid #ccc;
             box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
             display: block;
+            cursor: pointer;
         }
-        .spread-container.single-image img {
+        .spread-container.single-cover img {
             width: auto;
             max-width: 70%;
         }
@@ -102,7 +102,6 @@
             margin-top: 10px;
         }
 
-        /* End-of-story return link (spread view) */
         #end-return-spread {
             display: none;
             margin-top: 20px;
@@ -116,14 +115,9 @@
             text-decoration: none;
             color: #ab3b3b;
             box-shadow: 2px 2px 0 #ccc;
-            transition: background 0.2s;
             display: inline-block;
         }
-        #end-return-spread a:hover {
-            background: #f0ece1;
-        }
 
-        /* Scroll view */
         .scroll-view {
             text-align: center;
         }
@@ -136,9 +130,8 @@
             border: 1px solid #ccc;
             box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
             display: inline-block;
+            cursor: pointer;
         }
-
-        /* End-of-story return in scroll view */
         .scroll-end-return {
             text-align: center;
             margin: 30px 0;
@@ -151,12 +144,7 @@
             border: 1px solid #ab3b3b;
             text-decoration: none;
             color: #ab3b3b;
-            box-shadow: 2px 2px 0 #ccc;
             display: inline-block;
-            transition: background 0.2s;
-        }
-        .scroll-end-return a:hover {
-            background: #f0ece1;
         }
 
         .end-note {
@@ -183,7 +171,6 @@
             <button id="btn-scroll">📜 Scroll View</button>
         </div>
 
-        <!-- Spread view (default) -->
         <div id="spread-view" class="spread-view">
             <div id="spread-display" class="spread-container"></div>
             <div class="arrow-nav">
@@ -196,7 +183,6 @@
             </div>
         </div>
 
-        <!-- Scroll view (hidden initially) -->
         <div id="scroll-view" class="scroll-view" style="display:none;"></div>
 
         <div class="end-note">
@@ -268,13 +254,57 @@
                 }
             }
 
+            function goPrev() {
+                if (isMobile) {
+                    if (currentPageIdx > 0) {
+                        currentPageIdx--;
+                        render();
+                    }
+                } else {
+                    if (currentSpreadIdx > 0) {
+                        currentSpreadIdx--;
+                        render();
+                    }
+                }
+            }
+
+            function goNext() {
+                const { dataset, idx } = getCurrentData();
+                if (idx < dataset.length - 1) {
+                    if (isMobile) {
+                        currentPageIdx++;
+                    } else {
+                        currentSpreadIdx++;
+                    }
+                    render();
+                }
+            }
+
+            // Click left half of image = back, right half = forward
+            function attachImageNavigation(container) {
+                container.addEventListener('click', function(e) {
+                    const img = e.target.closest('img');
+                    if (!img) return;
+
+                    const rect = img.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    const imgWidth = rect.width;
+
+                    if (clickX < imgWidth / 2) {
+                        goPrev();
+                    } else {
+                        goNext();
+                    }
+                });
+            }
+
             function render() {
                 const { dataset, idx, total, label } = getCurrentData();
                 const images = dataset[idx];
                 const isSingle = images.length === 1;
 
                 let containerClass = 'spread-container';
-                if (isSingle) containerClass += ' single-image';
+                if (isSingle) containerClass += ' single-cover';
 
                 let html = `<div class="${containerClass}">`;
                 images.forEach(src => {
@@ -287,31 +317,49 @@
                 nextBtn.disabled = (idx === total - 1);
                 indicator.textContent = `${label} ${idx + 1} of ${total}`;
 
-                // Show "Return to Title Page" button only at the very end
                 if (idx === total - 1) {
                     endReturnDiv.style.display = 'block';
                 } else {
                     endReturnDiv.style.display = 'none';
                 }
+
+                attachImageNavigation(spreadDisplay);
             }
 
-            prevBtn.addEventListener('click', () => {
-                if (isMobile) {
-                    if (currentPageIdx > 0) { currentPageIdx--; }
-                } else {
-                    if (currentSpreadIdx > 0) { currentSpreadIdx--; }
-                }
-                render();
-            });
+            // Scroll view: click an image to jump to that page in spread view
+            function buildScrollView() {
+                let html = '';
+                allPages.forEach((src, i) => {
+                    html += `<div class="scroll-page" data-page="${i}"><img src="${imageBase}${src}" alt="Page ${i+1}"></div>`;
+                });
+                html += `<div class="scroll-end-return">
+                            <a href="../series/vanitas.html">↺ Return to Title Page</a>
+                         </div>`;
+                scrollView.innerHTML = html;
 
-            nextBtn.addEventListener('click', () => {
-                if (isMobile) {
-                    if (currentPageIdx < mobilePages.length - 1) { currentPageIdx++; }
-                } else {
-                    if (currentSpreadIdx < desktopSpreads.length - 1) { currentSpreadIdx++; }
-                }
-                render();
-            });
+                const pages = scrollView.querySelectorAll('.scroll-page');
+                pages.forEach(pageDiv => {
+                    const img = pageDiv.querySelector('img');
+                    if (!img) return;
+                    img.addEventListener('click', function(e) {
+                        const pageIndex = parseInt(pageDiv.dataset.page, 10);
+                        if (isMobile) {
+                            currentPageIdx = pageIndex;
+                        } else {
+                            if (pageIndex === 0) {
+                                currentSpreadIdx = 0;
+                            } else {
+                                currentSpreadIdx = Math.floor((pageIndex + 1) / 2);
+                            }
+                        }
+                        btnSpread.click();
+                        render();
+                    });
+                });
+            }
+
+            prevBtn.addEventListener('click', goPrev);
+            nextBtn.addEventListener('click', goNext);
 
             btnSpread.addEventListener('click', () => {
                 spreadView.style.display = 'block';
@@ -330,18 +378,6 @@
                     buildScrollView();
                 }
             });
-
-            function buildScrollView() {
-                let html = '';
-                allPages.forEach((src, i) => {
-                    html += `<div class="scroll-page"><img src="${imageBase}${src}" alt="Page ${i+1}"></div>`;
-                });
-                // Add "Return to Title Page" link at the end
-                html += `<div class="scroll-end-return">
-                            <a href="../series/vanitas.html">↺ Return to Title Page</a>
-                         </div>`;
-                scrollView.innerHTML = html;
-            }
 
             mobileQuery.addEventListener('change', (e) => {
                 const newIsMobile = e.matches;
