@@ -130,7 +130,6 @@
             border: 1px solid #ccc;
             box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
             display: inline-block;
-            cursor: pointer;
         }
         .scroll-end-return {
             text-align: center;
@@ -280,11 +279,9 @@
                 }
             }
 
-            // Attach click navigation to images in the spread view
             function attachSpreadClickHandlers(container) {
                 const images = container.querySelectorAll('img');
                 if (images.length === 1) {
-                    // Single image (cover or mobile single page): left half = prev, right half = next
                     images[0].addEventListener('click', function(e) {
                         const rect = this.getBoundingClientRect();
                         const clickX = e.clientX - rect.left;
@@ -295,7 +292,6 @@
                         }
                     });
                 } else if (images.length === 2) {
-                    // Two-page spread: left image = prev, right image = next
                     images[0].addEventListener('click', goPrev);
                     images[1].addEventListener('click', goNext);
                 }
@@ -329,41 +325,19 @@
                 attachSpreadClickHandlers(spreadDisplay);
             }
 
-            // Scroll view: click an image to jump to that page in spread view
             function buildScrollView() {
                 let html = '';
                 allPages.forEach((src, i) => {
-                    html += `<div class="scroll-page" data-page="${i}"><img src="${imageBase}${src}" alt="Page ${i+1}"></div>`;
+                    html += `<div class="scroll-page"><img src="${imageBase}${src}" alt="Page ${i+1}"></div>`;
                 });
                 html += `<div class="scroll-end-return">
                             <a href="../series/vanitas.html">↺ Return to Title Page</a>
                          </div>`;
                 scrollView.innerHTML = html;
-
-                const pages = scrollView.querySelectorAll('.scroll-page');
-                pages.forEach(pageDiv => {
-                    const img = pageDiv.querySelector('img');
-                    if (!img) return;
-                    img.addEventListener('click', function() {
-                        const pageIndex = parseInt(pageDiv.dataset.page, 10);
-                        if (isMobile) {
-                            currentPageIdx = pageIndex;
-                        } else {
-                            if (pageIndex === 0) {
-                                currentSpreadIdx = 0;
-                            } else {
-                                currentSpreadIdx = Math.floor((pageIndex + 1) / 2);
-                            }
-                        }
-                        btnSpread.click();
-                        render();
-                    });
-                });
             }
 
             // Keyboard navigation
             document.addEventListener('keydown', function(e) {
-                // Only when spread view is visible
                 if (spreadView.style.display === 'none') return;
                 if (e.key === 'ArrowLeft') {
                     e.preventDefault();
