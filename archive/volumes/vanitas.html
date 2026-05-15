@@ -280,22 +280,25 @@
                 }
             }
 
-            // Click left half of image = back, right half = forward
-            function attachImageNavigation(container) {
-                container.addEventListener('click', function(e) {
-                    const img = e.target.closest('img');
-                    if (!img) return;
-
-                    const rect = img.getBoundingClientRect();
-                    const clickX = e.clientX - rect.left;
-                    const imgWidth = rect.width;
-
-                    if (clickX < imgWidth / 2) {
-                        goPrev();
-                    } else {
-                        goNext();
-                    }
-                });
+            // Attach click navigation to images in the spread view
+            function attachSpreadClickHandlers(container) {
+                const images = container.querySelectorAll('img');
+                if (images.length === 1) {
+                    // Single image (cover or mobile single page): left half = prev, right half = next
+                    images[0].addEventListener('click', function(e) {
+                        const rect = this.getBoundingClientRect();
+                        const clickX = e.clientX - rect.left;
+                        if (clickX < rect.width / 2) {
+                            goPrev();
+                        } else {
+                            goNext();
+                        }
+                    });
+                } else if (images.length === 2) {
+                    // Two-page spread: left image = prev, right image = next
+                    images[0].addEventListener('click', goPrev);
+                    images[1].addEventListener('click', goNext);
+                }
             }
 
             function render() {
@@ -323,7 +326,7 @@
                     endReturnDiv.style.display = 'none';
                 }
 
-                attachImageNavigation(spreadDisplay);
+                attachSpreadClickHandlers(spreadDisplay);
             }
 
             // Scroll view: click an image to jump to that page in spread view
@@ -341,7 +344,7 @@
                 pages.forEach(pageDiv => {
                     const img = pageDiv.querySelector('img');
                     if (!img) return;
-                    img.addEventListener('click', function(e) {
+                    img.addEventListener('click', function() {
                         const pageIndex = parseInt(pageDiv.dataset.page, 10);
                         if (isMobile) {
                             currentPageIdx = pageIndex;
@@ -357,6 +360,19 @@
                     });
                 });
             }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                // Only when spread view is visible
+                if (spreadView.style.display === 'none') return;
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    goPrev();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    goNext();
+                }
+            });
 
             prevBtn.addEventListener('click', goPrev);
             nextBtn.addEventListener('click', goNext);
