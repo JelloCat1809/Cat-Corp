@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archives — Cat Corp</title>
-    <!-- Link to the main stylesheet in the root directory -->
     <link rel="stylesheet" href="../style.css">
     <style>
         body {
@@ -104,7 +103,29 @@
         .status-in-production { color: #ab3b3b; }
         .status-planned { color: #888; font-style: italic; }
         .status-completed { color: #4a7c4f; }
+        .status-development { color: #b8860b; }  /* dark goldenrod for in-development */
 
+        /* Sub‑series for Mekong Tales */
+        .sub-series {
+            margin-top: 10px;
+            margin-left: 30px;
+            padding-left: 20px;
+            border-left: 2px solid #ab3b3b;
+        }
+        .sub-series .series-item {
+            background: #f8f4ec;
+            box-shadow: 2px 2px 0 #ccc;
+        }
+        .sub-series .series-item:hover {
+            background: #efe7d5;
+        }
+        .sub-series-title {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #ab3b3b;
+            margin: 10px 0 6px 0;
+            text-transform: uppercase;
+        }
         .notice {
             margin-top: 30px;
             font-size: 12px;
@@ -131,6 +152,9 @@
             .series-cover {
                 width: 100px;
                 height: 140px;
+            }
+            .sub-series {
+                margin-left: 10px;
             }
         }
     </style>
@@ -177,21 +201,41 @@
                 </div>
                 <div class="series-info">
                     <h3>Vanitas</h3>
-                    <p>An artist with a strange method to create a hit art piece.</p>
+                    <p>A very short story — an artist with a strange method tries once more to create a hit piece.</p>
                     <span class="series-status status-completed">[ Completed ]</span>
                 </div>
             </a>
-            <!-- Apartment Mausoleum -->
-            <a href="series/apartment-mausoleum.html" class="series-item">
+
+            <!-- Apartment Mausoleum (Flagship) -->
+            <a href="series/apt-mausoleum.html" class="series-item">
                 <div class="series-cover">
-                    <img src="../images/apt-mau-cover.png" alt="Apartment Mausoleum Cover">
+                    <!-- Replace with actual cover image: <img src="../images/apt-maus-cover.png" alt="Apt Maus Cover"> -->
+                    [Cover]
                 </div>
                 <div class="series-info">
                     <h3>Apartment Mausoleum</h3>
-                    <p></p>
-                    <span class="series-status status-in-production">[ In Production ]</span>
+                    <p>Psychological folk‑horror set in a decaying Mekong Delta apartment building. The flagship.</p>
+                    <span class="series-status status-development">[ In Development ]</span>
                 </div>
             </a>
+
+            <!-- Mekong Tales (Sub‑series under Apartment Mausoleum) -->
+            <div class="sub-series">
+                <p class="sub-series-title">Mekong Tales — Declassified One‑Shots</p>
+                <a href="volumes/echo.html" class="series-item">
+                    <div class="series-cover">
+                        <!-- Replace with actual cover: <img src="../images/echo-cover.png" alt="Echo Cover"> -->
+                        [Cover]
+                    </div>
+                    <div class="series-info">
+                        <h3>Echo / 回声 / Âm Vang</h3>
+                        <p>A Cham woman sings across the valley. The valley answers. A day in Bak Khet, before the Fog.</p>
+                        <span class="series-status status-in-production">[ In Production ]</span>
+                    </div>
+                </a>
+                <p style="font-size:12px; color:#888; margin-left:20px; font-family:'Courier New', monospace;">Additional tales pending archival clearance.</p>
+            </div>
+
         </div>
 
         <p class="notice">Further volumes pending archival clearance.</p>
